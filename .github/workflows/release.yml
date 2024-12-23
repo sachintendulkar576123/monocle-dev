@@ -92,7 +92,7 @@ jobs:
 
       - name: Generate release notes
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           # conditional block not indented because of the heredoc
           if [[ ! -z $PRIOR_VERSION_WHEN_PATCH ]]; then
@@ -114,7 +114,7 @@ jobs:
 
       - name: Create GitHub release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           gh release create --target $GITHUB_REF_NAME \
                             --title "Version ${STABLE_VERSION}" \
@@ -129,7 +129,7 @@ jobs:
 
       - name: Copy change log updates to main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           if [[ -z $PRIOR_VERSION_WHEN_PATCH ]]; then
             # this was not a patch release, so the version exists already in the CHANGELOG.md
@@ -178,8 +178,8 @@ jobs:
 
       - name: Create pull request against main
         env:
-          # not using secrets.GITHUB_TOKEN since pull requests from that token do not run workflows
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # not using secrets.TOKEN since pull requests from that token do not run workflows
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           message="Copy change log updates from $GITHUB_REF_NAME"
           body="Copy log updates from \`$GITHUB_REF_NAME\`."
